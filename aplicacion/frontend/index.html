@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SGR · Reservas institucionales</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header><div class="barra"><strong>SGR</strong><span>Recursos institucionales</span><button id="salir" hidden>Cerrar sesión</button></div></header>
+<main>
+    <p id="mensaje" role="status"></p>
+    <section id="acceso">
+        <h1>Ingresar al sistema</h1>
+        <form id="login">
+            <label>Correo<input name="correo" type="email" autocomplete="username" required></label>
+            <label>Contraseña<input name="contrasena" type="password" autocomplete="current-password" required></label>
+            <button>Iniciar sesión</button>
+        </form>
+        <details><summary>Crear una cuenta</summary>
+            <form id="registro">
+                <label>Nombre<input name="nombre" required></label>
+                <label>Edad<input name="edad" type="number" min="1" max="120" required></label>
+                <label>Correo<input name="correo" type="email" required></label>
+                <label>Teléfono (opcional)<input name="telefono" type="tel"></label>
+                <label>Contraseña<input name="contrasena" type="password" autocomplete="new-password" required></label>
+                <button>Registrarme</button>
+            </form>
+        </details>
+    </section>
+    <div id="panel" hidden>
+        <nav aria-label="Secciones">
+            <button data-vista="recursos">Recursos</button><button data-vista="reservas">Reservas</button>
+            <button data-vista="usuarios" hidden>Usuarios</button><button data-vista="auditoria" hidden>Auditoría</button>
+        </nav>
+        <section id="recursos">
+            <h1>Recursos</h1>
+            <form id="horario" class="fila">
+                <label>Desde<input type="datetime-local" name="fecha_inicio" required></label>
+                <label>Hasta<input type="datetime-local" name="fecha_fin" required></label>
+                <button>Buscar disponibles</button><button type="button" id="verTodos" class="secundario">Ver todos</button>
+            </form>
+            <button id="nuevo" hidden>Nuevo recurso</button>
+            <form id="formRecurso" hidden>
+                <h2 id="tituloForm"></h2>
+                <label>Nombre<input name="nombre" maxlength="100" required></label>
+                <label>Estado<select name="estado"><option>Disponible</option><option>No disponible</option><option>Fuera de servicio</option><option>Mantenimiento</option></select></label>
+                <label>Detalles<textarea name="detalles"></textarea></label>
+                <div><button>Guardar</button> <button type="button" class="secundario" id="volver">Cancelar</button></div>
+            </form>
+            <div id="listaRecursos" class="tarjetas"></div>
+        </section>
+        <section id="reservas" hidden><h1>Reservas</h1><div id="listaReservas" class="tarjetas"></div></section>
+        <section id="usuarios" hidden><h1>Usuarios</h1><div id="listaUsuarios" class="tarjetas"></div></section>
+        <section id="auditoria" hidden><h1>Auditoría</h1><div id="listaAuditoria" class="tarjetas"></div></section>
+    </div>
+    <script src="app.js" defer></script>
+</main>
+</body>
+</html>

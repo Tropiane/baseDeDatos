@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f3f5f1; color: #20362f; font-family: Arial, sans-serif; }
+header { background: #173e35; color: white; }
+.barra, main { max-width: 1080px; margin: auto; padding: 20px; }
+.barra { display: flex; align-items: center; gap: 16px; }
+.barra strong { font-size: 26px; letter-spacing: 1px; }
+#salir { margin-left: auto; }
+h1 { font: normal 36px Georgia, serif; margin: 24px 0; }
+h2, h3 { margin: 0 0 10px; }
+form, article, details { background: white; border: 1px solid #cdd6ce; border-radius: 8px; padding: 18px; }
+form, label { display: grid; gap: 8px; }
+form { gap: 14px; margin-bottom: 18px; }
+#formRecurso, #acceso { max-width: 480px; }
+#formRecurso { margin-top: 14px; }
+details form { padding: 16px 0 0; margin: 0; border: 0; }
+summary, button { cursor: pointer; }
+input, select, textarea, button { font: inherit; padding: 9px 12px; border-radius: 5px; }
+input, select, textarea { min-width: 0; border: 1px solid #a3afa6; }
+button { border: 1px solid transparent; color: white; background: #21664f; }
+button:hover { filter: brightness(.9); }
+.secundario, nav button { color: #254b3b; background: #e3ece3; }
+nav button[aria-current="page"] { color: white; background: #254b3b; }
+nav, .fila, .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.fila { align-items: end; }
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(255px, 100%), 1fr)); gap: 14px; margin-top: 18px; }
+article { overflow-wrap: anywhere; }
+article p { margin: 8px 0; }
+.acciones { margin-top: 14px; }
+#mensaje:not(:empty) { padding: 12px; border-left: 4px solid #657a42; background: #e5eddc; }
+[hidden] { display: none; }
