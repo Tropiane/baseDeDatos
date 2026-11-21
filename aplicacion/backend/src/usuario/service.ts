@@ -1,7 +1,7 @@
 import UserDao from './dao';
 import {hashPassword, comparePassword} from '../utils/hash';
 import {signToken} from '../utils/jwt';
-import {user} from './interface';
+import {user, UsuarioEditable} from './interface';
 
 export default class UserService{
     private dao = new UserDao();
@@ -20,6 +20,10 @@ export default class UserService{
         }
         data.contrasena = hashPassword(data.contrasena);
         return await this.dao.create(data);
+    }
+
+    async update(id: number, data: UsuarioEditable, id_usuario: number){
+        return await this.dao.update(id, data, id_usuario);
     }
 
     async delete(id: number, id_usuario: number){

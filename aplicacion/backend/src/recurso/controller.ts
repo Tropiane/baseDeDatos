@@ -11,7 +11,7 @@ export default class RecursoController{
             return res.status(200).json(response);
         } catch(error){
             console.log(error);
-            return res.status(500).json({message: 'Error al procesar la solicitud'});
+            return res.status(500).json({message: 'Error al ver disponibles'});
         }
     }
 
@@ -21,7 +21,7 @@ export default class RecursoController{
             return res.status(200).json(response);
         } catch(error){
             console.log(error);
-            return res.status(500).json({message: 'Error al procesar la solicitud'});
+            return res.status(500).json({message: 'Error al ver los recursos'});
         }
     }
 
@@ -31,7 +31,7 @@ export default class RecursoController{
             return res.status(201).json(response);
         } catch(error){
             console.log(error);
-            return res.status(500).json({message: 'Error al procesar la solicitud'});
+            return res.status(500).json({message: 'Error al crear recurso'});
         }
     }
 
@@ -42,7 +42,7 @@ export default class RecursoController{
             return res.status(200).json(response);
         } catch(error){
             console.log(error);
-            return res.status(500).json({message: 'Error al procesar la solicitud'});
+            return res.status(500).json({message: 'Error al modificar recurso'});
         }
     }
 
@@ -53,7 +53,7 @@ export default class RecursoController{
             return res.status(200).json(response);
         } catch(error){
             console.log(error);
-            return res.status(500).json({message: 'Error al procesar la solicitud'});
+            return res.status(500).json({message: 'Error al borrar el recurso'});
         }
     }
 }

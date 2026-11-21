@@ -5,3 +5,5 @@ export interface user{
     contrasena: string;
     telefono?: string | null;
 }
+
+export type UsuarioEditable = Pick<user, 'nombre' | 'edad' | 'correo' | 'telefono'>;

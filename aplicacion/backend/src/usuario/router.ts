@@ -1,6 +1,6 @@
 import {Router, Request, Response} from 'express';
 import UserController from './controller';
-import { user } from './interface';
+import { user, UsuarioEditable } from './interface';
 import {validarUsuario, validarAdmin} from '../middlewares/validarTokens';
 
 const router = Router();
@@ -8,6 +8,7 @@ const controller = new UserController();
 
 router.get('/all', validarUsuario, validarAdmin, (req: Request, res: Response) => controller.getAll(req, res));
 router.post('/create', (req: Request<{},{}, user>, res: Response) => controller.create(req, res));
+router.put('/update/:id', validarUsuario, validarAdmin, (req: Request<{id: string}, {}, UsuarioEditable>, res: Response) => controller.update(req, res));
 router.delete('/delete/:id', validarUsuario, validarAdmin, (req: Request<{id: string}>, res: Response) => controller.delete(req, res));
 router.post('/login', (req: Request, res: Response) => controller.login(req, res));
 

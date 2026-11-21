@@ -1,6 +1,6 @@
 import pool from '../databases/postgres';
 import AuditoriaDao from '../auditoria/dao';
-import {user} from './interface';
+import {user, UsuarioEditable} from './interface';
 
 export default class UserDao{
     private auditoria = new AuditoriaDao();
@@ -23,6 +23,17 @@ export default class UserDao{
         );
         const id = response.rows[0].id;
         await this.auditoria.create({id_usuario: id, accion: 'crear', detalles: 'Se registro el usuario', entidad: 'usuario', id_entidad: id});
+        return response.rows;
+    }
+
+    async update(id: number, data: UsuarioEditable, id_usuario: number){
+        const {nombre, edad, correo, telefono} = data;
+        const response = await pool.query(
+            'update usuario set nombre = $1, edad = $2, correo = $3, telefono = $4 where id = $5 returning id, nombre, edad, correo, telefono, estado, rol',
+            [nombre, edad, correo, telefono, id]
+        );
+        if(!response.rows[0]) return [];
+        await this.auditoria.create({id_usuario, accion: 'editar', detalles: 'Se editaron los datos del usuario', entidad: 'usuario', id_entidad: id});
         return response.rows;
     }
 
