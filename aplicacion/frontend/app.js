@@ -4,6 +4,7 @@ const salir = document.getElementById("salir");
 const mensaje = document.getElementById("mensaje");
 const horario = document.getElementById("horario");
 const formRecurso = document.getElementById("formRecurso");
+const formUsuario = /** @type {HTMLFormElement} */ (document.getElementById("formUsuario"));
 let rol = "";
 let recursos = [];
 
@@ -157,6 +158,44 @@ async function actualizarReserva(id, estado) {
     }
 }
 
+/** @param {number} id */
+async function cancelarReserva(id) {
+    try {
+        const response = await fetch("http://localhost:3000/api/reserva/delete/" + id, {
+            method: "DELETE",
+            headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+        });
+        return await leerRespuesta(response);
+    } catch {
+        mensaje.textContent = "No se pudo conectar con el servidor.";
+    }
+}
+
+/**
+ * @typedef {{nombre: string, edad: number, correo: string, telefono: string | null}} DatosUsuario
+ * @typedef {DatosUsuario & {id: number}} UsuarioEditable
+ */
+
+/**
+ * @param {number} id
+ * @param {DatosUsuario} usuario
+ */
+async function actualizarUsuario(id, usuario) {
+    try {
+        const response = await fetch("http://localhost:3000/api/users/update/" + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(usuario)
+        });
+        return await leerRespuesta(response);
+    } catch {
+        mensaje.textContent = "No se pudo conectar con el servidor.";
+    }
+}
+
 async function desactivarUsuario(id) {
     try {
         const response = await fetch("http://localhost:3000/api/users/delete/" + id, {
@@ -192,6 +231,7 @@ async function cargarSesion() {
     document.querySelector('[data-vista="auditoria"]').hidden = rol !== "Administrador";
     document.getElementById("nuevo").hidden = rol !== "Administrador";
     formRecurso.hidden = true;
+    formUsuario.hidden = true;
     horario.reset();
     await mostrarVista("recursos");
 }
@@ -374,7 +414,9 @@ async function cargarReservas() {
             agregarBoton(acciones, "Rechazar", () => cambiarEstado(reserva.id, "rechazada"));
         }
         if (reserva.estado === "pendiente" || reserva.estado === "aprobada") {
-            agregarBoton(acciones, "Cancelar reserva", () => cambiarEstado(reserva.id, "cancelada"));
+            agregarBoton(acciones, "Cancelar reserva", async () => {
+                if (await cancelarReserva(reserva.id)) await cargarReservas();
+            });
         }
     });
 }
@@ -391,12 +433,43 @@ async function cargarUsuarios() {
     if (!data.length) lista.textContent = "No se encontraron usuarios.";
     data.forEach(usuario => {
         const acciones = crearTarjeta(lista, usuario.nombre, [usuario.correo, usuario.rol, usuario.estado ? "Activo" : "Inactivo"]);
+        if (rol === "Administrador") agregarBoton(acciones, "Editar", () => editarUsuario(usuario));
         if (usuario.estado) agregarBoton(acciones, "Desactivar", async () => {
             if (!confirm("¿Desactivar a " + usuario.nombre + "?")) return;
             if (await desactivarUsuario(usuario.id)) await cargarUsuarios();
         });
     });
 }
+
+/** @param {UsuarioEditable} usuario */
+function editarUsuario(usuario) {
+    //Cargo los datos actuales para poder editarlos
+    formUsuario.reset();
+    formUsuario.dataset.id = String(usuario.id);
+    formUsuario.elements["nombre"].value = usuario.nombre;
+    formUsuario.elements["edad"].value = String(usuario.edad);
+    formUsuario.elements["correo"].value = usuario.correo;
+    formUsuario.elements["telefono"].value = usuario.telefono || "";
+    formUsuario.hidden = false;
+    formUsuario.elements["nombre"].focus();
+}
+
+document.getElementById("volverUsuario").onclick = () => formUsuario.hidden = true;
+formUsuario.onsubmit = async function(event) {
+    event.preventDefault();
+    const datos = new FormData(formUsuario);
+    const usuario = {
+        nombre: String(datos.get("nombre")),
+        edad: Number(datos.get("edad")),
+        correo: String(datos.get("correo")),
+        telefono: String(datos.get("telefono")) || null
+    };
+    if (await actualizarUsuario(Number(formUsuario.dataset.id), usuario)) {
+        formUsuario.hidden = true;
+        await cargarUsuarios();
+        mensaje.textContent = "Usuario actualizado.";
+    }
+};
 
 async function cargarAuditoria() {
     const lista = document.getElementById("listaAuditoria");

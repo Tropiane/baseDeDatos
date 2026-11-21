@@ -51,7 +51,18 @@
             <div id="listaRecursos" class="tarjetas"></div>
         </section>
         <section id="reservas" hidden><h1>Reservas</h1><div id="listaReservas" class="tarjetas"></div></section>
-        <section id="usuarios" hidden><h1>Usuarios</h1><div id="listaUsuarios" class="tarjetas"></div></section>
+        <section id="usuarios" hidden>
+            <h1>Usuarios</h1>
+            <form id="formUsuario" hidden>
+                <h2>Editar usuario</h2>
+                <label>Nombre<input name="nombre" maxlength="100" required></label>
+                <label>Edad<input name="edad" type="number" min="1" max="120" required></label>
+                <label>Correo<input name="correo" type="email" maxlength="150" required></label>
+                <label>Teléfono (opcional)<input name="telefono" type="tel" maxlength="20"></label>
+                <div><button>Guardar</button> <button type="button" id="volverUsuario" class="secundario">Cancelar</button></div>
+            </form>
+            <div id="listaUsuarios" class="tarjetas"></div>
+        </section>
         <section id="auditoria" hidden><h1>Auditoría</h1><div id="listaAuditoria" class="tarjetas"></div></section>
     </div>
     <script src="app.js" defer></script>
